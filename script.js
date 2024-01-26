@@ -1,20 +1,40 @@
-const button = document.getElementById("my-button");
-const container = document.querySelector(".container");
-let toggle=true
-button.addEventListener("click", () => {
-  if(toggle){
-    container.classList.add("show-nav");
-    
-  }else{
-    container.classList.remove("show-nav");
+const cardPanel = document.querySelector(".container-card-panel");
+const lastCardIndex = parseInt(cardPanel?.children?.length) - 1;
+const up = document.getElementById("up");
+const down = document.getElementById("down");
+let current = -1;
+
+const handleUpNavigation = () => {
+  if (current === lastCardIndex) {
+    return;
   }
-  toggle=!toggle
-  
+  current++;
+
+  cardPanel?.children[current].scrollIntoView({ behavior: "smooth" });
+};
+const handleDownNavigation = () => {
+  if (current === -1) {
+    return;
+  }
+  current--;
+
+  cardPanel?.children[current].scrollIntoView({ behavior: "smooth" });
+};
+
+up.addEventListener("click", () => {
+  handleUpNavigation();
+});
+down.addEventListener("click", () => {
+  handleDownNavigation();
 });
 
-const open = document.getElementById('open')
-const close = document.getElementById('close')
- 
-open.addEventListener('click', () => container.classList.add('show-nav'))
-
-close.addEventListener('click', () => container.classList.remove('show-nav'))
+console.log(cardPanel?.children, cardPanel?.childNodes);
+document.addEventListener("keyup", (event) => {
+  event.preventDefault()
+  console.log(event.key);
+  if (event.key === "ArrowUp") {
+    handleDownNavigation();
+  } else if (event.key === "ArrowDown") {
+    handleUpNavigation();
+  }
+});
